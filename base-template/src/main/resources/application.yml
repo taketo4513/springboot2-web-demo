@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+# 日志配置
+logging:
+  # 指定日志配置文件位置
+  config: log4j2.xml
