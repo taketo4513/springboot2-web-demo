@@ -51,12 +51,95 @@
         </dependency>
     </dependencies>
 
+    <!-- 以下是Maven构建配置，主要用于打包Spring Boot应用 -->
     <build>
+        <!-- Maven插件配置 -->
         <plugins>
-            <!--项目构建-->
+            <!-- Spring Boot插件 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定应用的主类 -->
+                    <mainClass>cc.taekto.Application</mainClass>
+                    <!-- 打包成ZIP格式 -->
+                    <layout>ZIP</layout>
+                    <!-- 包含的依赖项 -->
+                    <includes>
+                        <include>
+                            <groupId>nothing</groupId>
+                            <artifactId>nothing</artifactId>
+                        </include>
+                    </includes>
+                    <!-- 指定输出目录 -->
+                    <outputDirectory>${project.basedir}/dist/apps</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven依赖插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 拷贝依赖项的输出目录 -->
+                            <outputDirectory>${project.basedir}/dist/lib</outputDirectory>
+                            <!-- 包含所有依赖项 -->
+                            <excludeTransitive>false</excludeTransitive>
+                            <!-- 不去除版本信息 -->
+                            <stripVersion>false</stripVersion>
+                            <!-- 包含运行时依赖项 -->
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven资源插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 指定配置文件的输出目录 -->
+                            <outputDirectory>${project.basedir}/dist/conf</outputDirectory>
+                            <!-- 配置资源 -->
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <!-- 不配置excludes\includes默认就是复制指定目录的所有文件 -->
+                                    <includes>
+                                        <include>*.properties</include>
+                                        <include>*.yml</include>
+                                        <exclude>*.xml</exclude>
+                                        <include>*/*.properties</include>
+                                        <include>*/*.yml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
