@@ -131,6 +131,18 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- 资源文件处理 -->
+        <resources>
+            <resource>
+                <!-- 拷贝log4j2.xml配置文件 -->
+                <directory>../</directory>
+                <targetPath>${project.basedir}/dist/conf</targetPath>
+                <includes>
+                    <include>log4j2.xml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>
