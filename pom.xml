@@ -25,11 +25,11 @@
     </parent>
 
     <dependencies>
-        <!--web开发-->
+        <!-- web开发 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!--排查自带日志，使用log4j2-->
+            <!-- 排查自带日志，使用log4j2 -->
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -38,13 +38,13 @@
             </exclusions>
         </dependency>
 
-        <!--测试-->
+        <!-- 测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
-        <!--日志-->
+        <!-- 日志 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
@@ -55,33 +55,22 @@
     <build>
         <!-- Maven插件配置 -->
         <plugins>
-            <!-- Spring Boot插件 -->
+            <!-- Maven JAR插件 -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <!-- 指定应用的主类 -->
-                    <mainClass>cc.taekto.Application</mainClass>
-                    <!-- 打包成ZIP格式 -->
-                    <layout>ZIP</layout>
-                    <!-- 包含的依赖项 -->
-                    <includes>
-                        <include>
-                            <groupId>nothing</groupId>
-                            <artifactId>nothing</artifactId>
-                        </include>
-                    </includes>
-                    <!-- 指定输出目录 -->
+                    <!-- 指定JAR的输出目录 -->
                     <outputDirectory>${project.basedir}/dist/apps</outputDirectory>
+                    <excludes>
+                        <!-- 排除配置文件，由外部resources下的配置文件来配置 -->
+                        <exclude>*.properties</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.xml</exclude>
+                        <exclude>*/*.properties</exclude>
+                        <exclude>*/*.yml</exclude>
+                    </excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- Maven依赖插件 -->
@@ -131,7 +120,7 @@
                                     <includes>
                                         <include>*.properties</include>
                                         <include>*.yml</include>
-                                        <exclude>*.xml</exclude>
+                                        <include>*.xml</include>
                                         <include>*/*.properties</include>
                                         <include>*/*.yml</include>
                                     </includes>
