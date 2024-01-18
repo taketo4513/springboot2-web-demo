@@ -1,4 +1,4 @@
-package cc.taekto.entity.login;
+package cc.taketo.entity.login;
 
 import lombok.Builder;
 import lombok.Data;

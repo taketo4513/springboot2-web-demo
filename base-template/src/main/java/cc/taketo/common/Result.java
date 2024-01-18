@@ -1,4 +1,4 @@
-package cc.taekto.common;
+package cc.taketo.common;
 
 public class Result<T> {
 

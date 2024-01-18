@@ -1,6 +1,6 @@
-package cc.taekto.utils;
+package cc.taketo.utils;
 
-import cc.taekto.entity.login.AuthCode;
+import cc.taketo.entity.login.AuthCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

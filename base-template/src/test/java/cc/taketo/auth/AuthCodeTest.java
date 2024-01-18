@@ -1,7 +1,7 @@
 package cc.taketo.auth;
 
-import cc.taekto.entity.login.AuthCode;
-import cc.taekto.utils.ImageCodeUtil;
+import cc.taketo.entity.login.AuthCode;
+import cc.taketo.utils.ImageCodeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

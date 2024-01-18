@@ -1,6 +1,6 @@
-package cc.taekto.exception;
+package cc.taketo.exception;
 
-import cc.taekto.common.ResultCode;
+import cc.taketo.common.ResultCode;
 
 public class CustomException extends RuntimeException {
 

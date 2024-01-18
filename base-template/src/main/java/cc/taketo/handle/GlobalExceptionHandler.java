@@ -1,7 +1,7 @@
-package cc.taekto.handle;
+package cc.taketo.handle;
 
-import cc.taekto.common.Result;
-import cc.taekto.exception.CustomException;
+import cc.taketo.common.Result;
+import cc.taketo.exception.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
