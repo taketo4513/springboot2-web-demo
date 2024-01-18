@@ -61,7 +61,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <!-- 指定JAR的输出目录 -->
-                    <outputDirectory>${project.basedir}/dist/apps</outputDirectory>
+                    <outputDirectory>${project.basedir}/dist/app</outputDirectory>
                     <excludes>
                         <!-- 排除配置文件，由外部resources下的配置文件来配置 -->
                         <exclude>*.properties</exclude>
@@ -114,6 +114,7 @@
                             <outputDirectory>${project.basedir}/dist/conf</outputDirectory>
                             <!-- 配置资源 -->
                             <resources>
+                                <!-- 拷贝配置文件 -->
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <!-- 不配置excludes\includes默认就是复制指定目录的所有文件 -->
@@ -125,6 +126,22 @@
                                         <include>*/*.yml</include>
                                     </includes>
                                 </resource>
+                                <!-- 拷贝日志配置文件 -->
+                                <resource>
+                                    <directory>../</directory>
+                                    <targetPath>${project.basedir}/dist/conf</targetPath>
+                                    <includes>
+                                        <include>log4j2.xml</include>
+                                    </includes>
+                                </resource>
+                                <!-- 拷贝脚本文件 -->
+                                <resource>
+                                    <directory>../scripts</directory>
+                                    <targetPath>${project.basedir}/dist</targetPath>
+                                    <includes>
+                                        <include>*.sh</include>
+                                    </includes>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
@@ -132,17 +149,6 @@
             </plugin>
         </plugins>
 
-        <!-- 资源文件处理 -->
-        <resources>
-            <resource>
-                <!-- 拷贝log4j2.xml配置文件 -->
-                <directory>../</directory>
-                <targetPath>${project.basedir}/dist/conf</targetPath>
-                <includes>
-                    <include>log4j2.xml</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 
 </project>
