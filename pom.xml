@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- 排查自带日志，使用log4j2 -->
+            <!-- 排除自带日志，使用log4j2 -->
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -64,11 +64,10 @@
                     <outputDirectory>${project.basedir}/dist/app</outputDirectory>
                     <excludes>
                         <!-- 排除配置文件，由外部resources下的配置文件来配置 -->
-                        <exclude>*.properties</exclude>
-                        <exclude>*.yml</exclude>
-                        <exclude>*.xml</exclude>
-                        <exclude>*/*.properties</exclude>
-                        <exclude>*/*.yml</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.yml</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.toml</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -119,11 +118,10 @@
                                     <directory>src/main/resources</directory>
                                     <!-- 不配置excludes\includes默认就是复制指定目录的所有文件 -->
                                     <includes>
-                                        <include>*.properties</include>
-                                        <include>*.yml</include>
-                                        <include>*.xml</include>
-                                        <include>*/*.properties</include>
-                                        <include>*/*.yml</include>
+                                        <include>**/*.properties</include>
+                                        <include>**/*.yml</include>
+                                        <include>**/*.xml</include>
+                                        <include>**/*.toml</include>
                                     </includes>
                                 </resource>
                                 <!-- 拷贝日志配置文件 -->
