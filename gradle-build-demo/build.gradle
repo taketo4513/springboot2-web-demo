@@ -14,7 +14,10 @@ version '1.0-SNAPSHOT'
 
 repositories {
     jcenter()
-    maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url "https://maven.aliyun.com/repository/public/" }
+    maven { url "https://maven.aliyun.com/repository/central" }
+    maven { url "https://maven.aliyun.com/repository/google/" }
+    maven { url "https://maven.aliyun.com/repository/apache-snapshots" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     mavenCentral()
 }
