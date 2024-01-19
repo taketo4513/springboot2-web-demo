@@ -1,0 +1,7 @@
+server:
+  port: 80
+
+# 日志配置
+logging:
+  # 指定日志配置文件位置
+  config: classpath:log4j2.xml

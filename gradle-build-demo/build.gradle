@@ -1,0 +1,103 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    // 维护springboot版本号
+    id 'org.springframework.boot' version '2.7.18'
+    // 进行依赖管理,在引入其它boot依赖时省略版本号、解决jar包冲突问题
+    id 'io.spring.dependency-management' version '1.1.4'
+    // 引入grgit插件,用于git操作
+    id 'org.ajoberstar.grgit' version '4.1.1'
+}
+
+group 'cc.taketo'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+    maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    mavenCentral()
+}
+
+dependencies {
+    // springboot 核心库
+    implementation 'org.springframework.boot:spring-boot-starter'
+    // web 开发
+    testImplementation('org.springframework.boot:spring-boot-starter-web') {
+        // 排除自带日志，使用log4j2
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    // 日志
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    // 测试
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+configurations.all {
+    exclude module: "testng"
+}
+
+jar {
+    destinationDir file('dist/app')
+    archiveName project.name + "-" + project.version + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.toml'
+    exclude '**/*.properties'
+    exclude '**/*.yml'
+
+    manifest {
+        try {
+            def repo = grgit.open(dir: file('.').canonicalPath)
+            if (repo != null) {
+                def date = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                def branch = repo.branch.getCurrent().getName()
+                def commit = repo.head().getAbbreviatedId(40)
+
+                attributes(["Implementation-Timestamp": date,
+                            "Git-Branch"              : branch,
+                            "Git-Commit"              : commit
+                ])
+
+                logger.info("  Commit : ")
+                logger.info("  => date: {}", date)
+                logger.info("  => branch: {}", branch)
+                logger.info("  => commit: {}", commit)
+            }
+        } catch (Exception e) {
+            // logger.warn(' .git not exist, cannot found commit info')
+        }
+    }
+
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/conf'
+        }
+        copy {
+            from configurations.runtimeClasspath
+            into 'dist/lib'
+        }
+        copy {
+            from file('.').listFiles().findAll { File f -> (f.name.endsWith('.sh') || f.name.endsWith('.env')) }
+            into 'dist'
+        }
+        copy {
+            from file('../scripts/')
+            into 'dist'
+        }
+    }
+}
+
+test {
+    testLogging {
+        showStandardStreams = false
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
