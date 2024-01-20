@@ -165,7 +165,7 @@ before_start() {
 # Start the application
 start() {
     rm -rf $SHELL_FOLDER/pid/
-    mkdir -p $SHELL_FOLDER/pid/
+    [ ! -d $SHELL_FOLDER/pid/ ] && mkdir -p $SHELL_FOLDER/pid/
     rm -f start.out
     show_info
     run_jar
