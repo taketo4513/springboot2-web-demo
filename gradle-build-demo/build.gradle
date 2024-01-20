@@ -17,7 +17,6 @@ version '1.0-SNAPSHOT'
 
 // 仓库配置
 repositories {
-    jcenter()
     maven { url "https://maven.aliyun.com/repository/public/" }
     maven { url "https://maven.aliyun.com/repository/central" }
     maven { url "https://maven.aliyun.com/repository/google/" }
@@ -45,9 +44,9 @@ configurations.all {
 // 构建任务配置
 jar {
     // JAR输出目录
-    destinationDir file('dist/app')
+    destinationDirectory = file('dist/app')
     // JAR文件名
-    archiveName project.name + "-" + project.version + '.jar'
+    archiveFileName = project.name + "-" + project.version + '.jar'
     exclude '**/*.xml'
     exclude '**/*.toml'
     exclude '**/*.properties'
@@ -97,6 +96,10 @@ jar {
             from file('../scripts/')
             into 'dist'
         }
+        copy {
+            from file('../log4j2.xml')
+            into 'dist/conf'
+        }
     }
 }
 
@@ -113,7 +116,7 @@ test {
 // Jacoco测试报告配置
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled false
+        xml.required = true
+        html.required = false
     }
 }
