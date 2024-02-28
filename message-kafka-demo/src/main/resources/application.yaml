@@ -1,0 +1,34 @@
+spring:
+  kafka:
+    # kafka服务地址
+    bootstrap-servers: 192.168.31.101:9090,192.168.31.101:9091,192.168.31.101:9092
+    producer:
+      # 默认的key和value的序列化类
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 应答级别
+      # 0: 生产者发送过来的数据，不需要等数据落盘答。
+      # 1: 生产者发送过来的数据， Leader收到数据后答。
+      # -1(all): 生产者发送过来的数据，Leader和isr队列里面的所有节点收齐数据后应答。
+      acks: all
+      # 重试次数，默认是 int 最大值 2147483647。
+      retries: 3
+      # 批次大小，默认 16k，适当增加该值，可以提高吞吐量，但是如果该值设置太大，会导致数据传输延迟增加。
+      batch-size: 16384
+      # RecordAccumulator 缓冲区总大小，默认 32m
+      buffer-memory: 33554432
+      # 压缩，默认 none，可配置值 gzip、snappy、lz4和zstd
+      compression-type: none
+      # 事务ID
+      transaction-id-prefix: tx-
+      # 属性配置
+      properties:
+        # 数据拉取等待时间，生产环境建议该值大小为 5-100ms 之间。
+        linger.ms: 0
+        # 幂等性
+        enable.idempotence: true
+        # 配置自定义分区器
+#        partitioner.class: cc.taketo.partitioner.CustomPartitioner
+    consumer:
+      # 默认的消费组
+      group-id: test-consumer-group
