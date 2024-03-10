@@ -1,0 +1,120 @@
+server:
+  port: 8080
+
+spring:
+  # 应用名称
+  application:
+    name: data-sharding-demo
+  # ShardingSphere的配置项
+  shardingsphere:
+    props:
+      # 打印SQl
+      sql-show: true
+    # 内存模式
+    mode:
+      type: Memory
+    # 真实数据源配置
+    datasource:
+      names: master,slave1,slave2
+      master:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://10.0.10.123:5430/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        username: user
+        password: 1q2w3e!Q@W#E
+      slave1:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://10.0.10.123:5431/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        username: user
+        password: 1q2w3e!Q@W#E
+      slave2:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://10.0.10.123:5432/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        username: user
+        password: 1q2w3e!Q@W#E
+    # ShardingSphere的属性配置
+    rules:
+      # 读写分离类型，如: Static，Dynamic
+      readwrite-splitting:
+        data-sources:
+          # 自定义数据源名称
+          myds:
+            type: Static
+            props:
+              # 写数据源名称
+              write-data-source-name: master
+              # 读数据源名称，多个从数据源用逗号分隔
+              read-data-source-names: slave1,slave2
+              # 负载均衡算法名称：alg_round,alg_random,alg_weight
+              load-balancer-name: alg_round
+        # 负载均衡算法类型
+        load-balancers:
+          # 轮询算法
+          alg_round:
+            type: ROUND_ROBIN
+          # 随机算法
+          alg_random:
+            type: RANDOM
+          # 权重算法
+          alg_weight:
+            type: WEIGHT
+            props:
+              slave1: 1
+              slave2: 2
+      # 分片配置
+      sharding:
+        # 分表配置
+        tables:
+          # 逻辑表名
+          t_user:
+            # 真实表名，这里需要加上写入数据库的名称
+            actual-data-nodes: master.t_user$->{0..2}
+            # 分布式序列策略配置
+            key-generate-strategy:
+              # 分布式序列列名称
+              column: id
+              # 分布式序列算法名称
+              key-generator-name: alg_snowflake
+            # 分配算法
+            database-strategy:
+              # 分片算法类型
+              hint:
+                # 分片算法名称
+                sharding-algorithm-name: alg_inline_userid
+        # 分布式序列配置
+        key-generators:
+          # 雪花算法类型
+          alg_snowflake:
+            type: SNOWFLAKE
+        # 分片算法类型
+        sharding-algorithms:
+          # 行分片算法
+          alg_inline_userid:
+            type: INLINE
+            props:
+              algorithm-expression: master.t_user$->{id % 3}
+          # 取模分片算法
+          alg_mod:
+            type: MOD
+            props:
+              sharding-count: 2
+          # 哈希取模分片算法
+          alg_hash_mod:
+            type: HASH_MOD
+            props:
+              sharding-count: 2
+
+mybatis-plus:
+  # 扫描Mapper接口对应的XML文件
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 日志
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 命名自动驼峰转换
+    map-underscore-to-camel-case: true
+#  global-config:
+#    db-config:
+      # 主键类型，auto：数据库id自增
+#      id-type: assign_id

@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @TableName("t_user")
 public class User {
-    @TableId
+
     private Long id;
 
     private String username;
