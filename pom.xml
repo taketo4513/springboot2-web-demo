@@ -11,6 +11,7 @@
     <modules>
         <module>base-template</module>
         <module>message-kafka-demo</module>
+        <module>data-sharding-demo</module>
     </modules>
 
     <properties>
