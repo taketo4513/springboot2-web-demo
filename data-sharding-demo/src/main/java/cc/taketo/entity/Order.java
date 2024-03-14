@@ -10,12 +10,14 @@ import java.time.LocalDateTime;
  * @date 2024/3/10 18:52
  */
 @Data
-@TableName("t_user")
-public class User {
+@TableName("t_order")
+public class Order {
 
     private Long id;
 
-    private String username;
+    private String orderNo;
+
+    private Long userId;
 
     private LocalDateTime createTime;
 }
