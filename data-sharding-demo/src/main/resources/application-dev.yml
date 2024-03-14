@@ -78,9 +78,10 @@ spring:
               # 分布式序列算法名称
               key-generator-name: alg_snowflake
             # 分配算法
-            database-strategy:
+            table-strategy:
               # 分片算法类型
-              hint:
+              standard:
+                sharding-column: id
                 # 分片算法名称
                 sharding-algorithm-name: alg_inline_userid
         # 分布式序列配置
@@ -94,7 +95,7 @@ spring:
           alg_inline_userid:
             type: INLINE
             props:
-              algorithm-expression: master.t_user$->{id % 3}
+              algorithm-expression: t_user$->{id % 3}
           # 取模分片算法
           alg_mod:
             type: MOD
