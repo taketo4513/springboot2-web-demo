@@ -9,6 +9,7 @@ import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -72,5 +73,18 @@ public class ShareTableTest {
         // Order表按照UserId分表，使用UserId查询，只查一次。
         Order order = orderMapper.selectOne(new LambdaQueryWrapper<Order>().eq(Order::getUserId, 1768226971673591810L));
         System.out.println("order = " + order);
+    }
+
+    @Test
+    @Transactional
+    public void testTx() {
+        // @Transactional注解，默认情况下就会对事务进行回滚
+        User user = new User();
+        user.setUsername("lisi");
+        user.setCreateTime(LocalDateTime.parse(LocalDateTime.now().format(dateTemplate), dateTemplate));
+
+        userMapper.insert(user);
+        List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>().eq(User::getUsername, "lisi"));
+        System.out.println("users = " + users);
     }
 }
