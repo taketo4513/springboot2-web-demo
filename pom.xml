@@ -12,6 +12,7 @@
         <module>base-template</module>
         <module>message-kafka-demo</module>
         <module>data-sharding-demo</module>
+        <module>data-gauss-demo</module>
     </modules>
 
     <properties>
