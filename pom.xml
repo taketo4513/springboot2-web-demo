@@ -13,6 +13,7 @@
         <module>message-kafka-demo</module>
         <module>data-sharding-demo</module>
         <module>data-gauss-demo</module>
+        <module>cache-redis-demo</module>
     </modules>
 
     <properties>
