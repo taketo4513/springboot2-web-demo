@@ -3,7 +3,7 @@ server:
 
 spring:
   # ShardingSphere的配置项
-  shardingsphere:
+  sharding-sphere:
     props:
       # 打印SQl
       sql-show: true

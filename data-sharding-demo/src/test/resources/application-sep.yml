@@ -1,0 +1,58 @@
+spring:
+  # ShardingSphere的配置项
+  sharding-sphere:
+    props:
+      # 打印SQl
+      sql-show: true
+    # 内存模式
+    mode:
+      type: Memory
+    # 真实数据源配置
+    datasource:
+      names: ds
+      ds:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://10.0.10.123:5430/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        type: com.zaxxer.hikari.HikariDataSource
+        username: user
+        password: 1q2w3e!Q@W#E
+    # 分片配置
+    rules:
+      # 分片配置
+      sharding:
+        # 分表配置
+        tables:
+          # 逻辑表名
+          t_log_info:
+            # 真实表名，这里需要加上写入数据库的名称
+            # 使用读写分离数据源的逻辑库名称
+            #              actual-data-nodes: ds.t_log_info_0$->{1..9}_0$->{0,7},ds.t_log_info_$->{10..12}_0$->{0,7}
+            actual-data-nodes: ds.t_log_info_03_0$->{0,3}
+            # 分表算法
+            table-strategy:
+              # 分表算法类型
+              standard:
+                sharding-column: id
+                # 分片算法名称
+                sharding-algorithm-name: table
+        # 分片算法类型
+        sharding-algorithms:
+          # 分表算法
+          table:
+            type: CLASS_BASED
+            props:
+              strategy: STANDARD
+              algorithm-class-name: cc.taketo.algorithm.CRC8ShardingAlgorithm
+
+mybatis-plus:
+  # 扫描Mapper接口对应的XML文件
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 日志
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 命名自动驼峰转换
+    map-underscore-to-camel-case: true
+    #  global-config:
+    #    db-config:
+    # 主键类型，auto：数据库id自增
+#      id-type: assign_id
