@@ -7,4 +7,4 @@ spring:
     name: data-sharding-demo
   profiles:
     # ms：主备 sep：分库分表
-    active: sep
+    active: ms

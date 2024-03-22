@@ -1,6 +1,6 @@
 spring:
   # ShardingSphere的配置项
-  sharding-sphere:
+  shardingsphere:
     props:
       # 打印SQl
       sql-show: true
@@ -14,7 +14,7 @@ spring:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://10.0.10.123:5430/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
         type: com.zaxxer.hikari.HikariDataSource
-        username: user
+        username: postgres
         password: 1q2w3e!Q@W#E
     # 分片配置
     rules:
@@ -26,20 +26,20 @@ spring:
           t_log_info:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            #              actual-data-nodes: ds.t_log_info_0$->{1..9}_0$->{0,7},ds.t_log_info_$->{10..12}_0$->{0,7}
-            actual-data-nodes: ds.t_log_info_03_0$->{0,3}
-            # 分表算法
+            #              actual-data-nodes: ds.t_log_info_0$->{1..9}_0$->{0..7},ds.t_log_info_$->{10..12}_0$->{0..7}
+            actual-data-nodes: ds.t_log_info_03_0$->{0..3}
+            # 分表策略
             table-strategy:
               # 分表算法类型
               standard:
                 sharding-column: id
                 # 分片算法名称
-                sharding-algorithm-name: table
+                sharding-algorithm-name: alg-crc8
         # 分片算法类型
         sharding-algorithms:
           # 分表算法
-          table:
-            type: CLASS_BASED
+          alg-crc8:
+            type: CRC8_TYPE
             props:
               strategy: STANDARD
               algorithm-class-name: cc.taketo.algorithm.CRC8ShardingAlgorithm

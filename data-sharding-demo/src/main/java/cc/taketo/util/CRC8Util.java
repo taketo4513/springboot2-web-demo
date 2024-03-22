@@ -1,16 +1,15 @@
-package cc.taketo.algorithm;
-
-import org.junit.jupiter.api.Test;
+package cc.taketo.util;
 
 import java.nio.ByteBuffer;
 
 /**
  * @author Zhangp
- * @date 2024/3/10 17:25
+ * @date 2024/3/22 16:34
  */
-public class CRC8Test {
+public class CRC8Util {
 
     private static final int POLYNOMIAL = 0x07; // CRC8多项式
+
     private static final int INITIAL_VALUE = 0x00; // 初始值
 
     /**
@@ -34,22 +33,9 @@ public class CRC8Test {
         return crc & 0xFF;
     }
 
-    @Test
-    public void testCRC8() {
-        int[] count = new int[8]; // 数字出现次数统计数组
-        // 分布式ID
-        long snowflakeId = 1766762715877081088L;
-
-        for (int i = 0; i < 1000; i++) {
-            // 计算CRC8值
-            int crc8 = calculateCRC8(String.valueOf(snowflakeId + i).getBytes());
-            // 统计数字出现次数
-            count[crc8 % 8]++;
-        }
-
-        // 打印每个数字出现的次数
-        for (int i = 0; i < 8; i++) {
-            System.out.println("数字 " + (i) + " 出现次数: " + count[i]);
-        }
+    public static byte[] longToBytes(long value) {
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(value);
+        return buffer.array();
     }
 }
