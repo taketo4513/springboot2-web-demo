@@ -12,9 +12,9 @@ spring:
       names: ds
       ds:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://10.0.10.123:5430/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+        url: jdbc:postgresql://10.0.10.123:5432/postgres?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
         type: com.zaxxer.hikari.HikariDataSource
-        username: postgres
+        username: user
         password: 1q2w3e!Q@W#E
     # 分片配置
     rules:
