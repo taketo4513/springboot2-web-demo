@@ -8,7 +8,7 @@ import org.apache.shardingsphere.sharding.api.sharding.standard.StandardSharding
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class CRC8ShardingAlgorithm implements StandardShardingAlgorithm<Long> {
+public class CRC8TableShardingAlgorithm implements StandardShardingAlgorithm<Long> {
 
     private static final int SUB_TABLE_NUM = 4; // 分表数量
 
@@ -35,6 +35,6 @@ public class CRC8ShardingAlgorithm implements StandardShardingAlgorithm<Long> {
 
     @Override
     public String getType() {
-        return "CRC8_TYPE";
+        return "CRC8_TABLE_TYPE";
     }
 }

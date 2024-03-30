@@ -41,6 +41,7 @@ public class LogInfoController {
     @GetMapping("/get")
     public String get() {
         List<LogInfo> logInfos = logInfoMapper.selectList(null);
+        System.out.println(logInfos.size());
         return JSON.toJSONString(logInfos);
     }
 
