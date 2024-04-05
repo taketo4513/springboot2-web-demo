@@ -6,6 +6,7 @@ import cn.hutool.core.date.DatePattern;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,9 +46,9 @@ public class LogInfoController {
         return JSON.toJSONString(logInfos);
     }
 
-    @GetMapping("/get")
-    public String get() {
-        List<LogInfo> logInfos = logInfoMapper.selectList(new LambdaQueryWrapper<LogInfo>().eq(LogInfo::getId, 1774103798264287234L));
+    @GetMapping("/get/{id}")
+    public String get(@PathVariable Long id) {
+        List<LogInfo> logInfos = logInfoMapper.selectList(new LambdaQueryWrapper<LogInfo>().eq(LogInfo::getId, id));
         System.out.println(logInfos.size());
         return JSON.toJSONString(logInfos);
     }
