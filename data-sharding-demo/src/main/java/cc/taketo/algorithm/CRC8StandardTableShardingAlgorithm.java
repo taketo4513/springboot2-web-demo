@@ -5,24 +5,21 @@ import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingV
 import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
 import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Properties;
 
-public class CRC8TableShardingAlgorithm implements StandardShardingAlgorithm<Long> {
+public class CRC8StandardTableShardingAlgorithm implements StandardShardingAlgorithm<Long> {
 
     private static final int SUB_TABLE_NUM = 4; // 分表数量
 
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
-        // 获取当前月份01~12
-        int currentMonth = LocalDateTime.now().getMonthValue();
-        String templateMonth = String.format("%02d", currentMonth);
         // 对分片键 CRC8取模
         int tableSuffix = CRC8Util.calculateCRC8(CRC8Util.longToBytes(preciseShardingValue.getValue())) % SUB_TABLE_NUM;
         // 获取逻辑表名
         String logicTableName = preciseShardingValue.getLogicTableName();
 
-        return logicTableName.concat("_").concat(templateMonth).concat("_0").concat(String.valueOf(tableSuffix));
+        return logicTableName.concat("_0").concat(String.valueOf(tableSuffix));
     }
 
     @Override
@@ -31,10 +28,16 @@ public class CRC8TableShardingAlgorithm implements StandardShardingAlgorithm<Lon
     }
 
     @Override
-    public void init() {}
+    public String getType() {
+        return "CRC8_STANDARD_TABLE_TYPE";
+    }
 
     @Override
-    public String getType() {
-        return "CRC8_TABLE_TYPE";
+    public Properties getProps() {
+        return null;
+    }
+
+    @Override
+    public void init(Properties properties) {
     }
 }

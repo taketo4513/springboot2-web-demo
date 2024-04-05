@@ -1,2 +1,3 @@
 cc.taketo.algorithm.CRC8DatabaseShardingAlgorithm
-cc.taketo.algorithm.CRC8TableShardingAlgorithm
+cc.taketo.algorithm.CRC8StandardTableShardingAlgorithm
+cc.taketo.algorithm.CRC8ComplexTableShardingAlgorithm

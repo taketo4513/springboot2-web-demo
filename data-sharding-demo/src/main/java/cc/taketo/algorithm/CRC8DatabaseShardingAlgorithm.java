@@ -1,12 +1,12 @@
 package cc.taketo.algorithm;
 
-import cc.taketo.util.CRC8Util;
 import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingValue;
 import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
 import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Properties;
 
 public class CRC8DatabaseShardingAlgorithm implements StandardShardingAlgorithm<Long> {
 
@@ -23,10 +23,17 @@ public class CRC8DatabaseShardingAlgorithm implements StandardShardingAlgorithm<
     }
 
     @Override
-    public void init() {}
+    public String getType() {
+        return "CRC8_STANDARD_DATABASE_TYPE";
+    }
 
     @Override
-    public String getType() {
-        return "CRC8_DATABASE_TYPE";
+    public Properties getProps() {
+        return null;
+    }
+
+    @Override
+    public void init(Properties properties) {
+
     }
 }

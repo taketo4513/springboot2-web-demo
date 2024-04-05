@@ -38,9 +38,23 @@ public class LogInfoController {
         return "ok";
     }
 
+    @GetMapping("/list")
+    public String list() {
+        List<LogInfo> logInfos = logInfoMapper.selectList(null);
+        System.out.println(logInfos.size());
+        return JSON.toJSONString(logInfos);
+    }
+
     @GetMapping("/get")
     public String get() {
-        List<LogInfo> logInfos = logInfoMapper.selectList(null);
+        List<LogInfo> logInfos = logInfoMapper.selectList(new LambdaQueryWrapper<LogInfo>().eq(LogInfo::getId, 1774103798264287234L));
+        System.out.println(logInfos.size());
+        return JSON.toJSONString(logInfos);
+    }
+
+    @GetMapping("/order")
+    public String orderBy() {
+        List<LogInfo> logInfos = logInfoMapper.selectList(new LambdaQueryWrapper<LogInfo>().orderByAsc(LogInfo::getCreateTime));
         System.out.println(logInfos.size());
         return JSON.toJSONString(logInfos);
     }
@@ -48,8 +62,8 @@ public class LogInfoController {
     @GetMapping("/between")
     public String between() {
         LambdaQueryWrapper<LogInfo> queryWrapper = new LambdaQueryWrapper<LogInfo>().between(LogInfo::getCreateTime,
-                LocalDateTime.parse("2024-03-22 16:35:30", dateTemplate),
-                LocalDateTime.parse("2024-03-22 16:35:35", dateTemplate));
+                LocalDateTime.parse("2023-03-22 16:35:30", dateTemplate),
+                LocalDateTime.parse("2025-03-22 16:35:35", dateTemplate));
         List<LogInfo> logInfos = logInfoMapper.selectList(queryWrapper);
         return JSON.toJSONString(logInfos);
     }

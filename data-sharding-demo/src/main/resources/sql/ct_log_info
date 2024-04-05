@@ -1,0 +1,28 @@
+CREATE OR REPLACE FUNCTION "public"."ct_log_info"()
+  RETURNS "pg_catalog"."void" AS $BODY$
+DECLARE
+    table_index INT;
+    current_month INT;
+BEGIN
+    FOR current_month IN 1..12 LOOP
+        FOR table_index IN 0..7 LOOP
+				EXECUTE format(
+						'DROP TABLE IF EXISTS "public"."t_log_info_%s_%s";
+						 CREATE TABLE "public"."t_log_info_%s_%s" (
+						 "id" int8 NOT NULL,
+						 "log_info" varchar(255) COLLATE "pg_catalog"."default",
+						 "create_time" timestamp(6),
+						 CONSTRAINT "t_log_info_%s_%s_pkey" PRIMARY KEY ("id"));',
+						LPAD(current_month::text, 2, '0'),
+						LPAD(table_index::text, 2, '0'),
+						LPAD(current_month::text, 2, '0'),
+						LPAD(table_index::text, 2, '0'),
+						LPAD(current_month::text, 2, '0'),
+						LPAD(table_index::text, 2, '0')
+				);
+        END LOOP;
+    END LOOP;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100

@@ -29,11 +29,44 @@ spring:
         # 分表配置
         tables:
           # 逻辑表名
+          t_user:
+            # 真实表名，这里需要加上写入数据库的名称
+            # 使用读写分离数据源的逻辑库名称
+            actual-data-nodes: ds202$->{3..4}.t_user$->{0..1}
+            # 分布式序列策略配置
+            key-generate-strategy:
+              # 分布式序列列名称
+              column: id
+              # 分布式序列算法名称
+              key-generator-name: key-gen-snowflake
+            # 分表算法
+            table-strategy:
+              # 分表算法类型
+              standard:
+                sharding-column: id
+                # 分片算法名称
+                sharding-algorithm-name: alg-standard-table_crc8
+          t_order:
+            # 真实表名，这里需要加上写入数据库的名称
+            # 使用读写分离数据源的逻辑库名称
+            actual-data-nodes: ds202$->{3..4}.t_order$->{0..2}
+            # 分布式序列策略配置
+            key-generate-strategy:
+              # 分布式序列列名称
+              column: id
+              # 分布式序列算法名称
+              key-generator-name: key-gen-snowflake
+            # 分表算法
+            table-strategy:
+              # 分表算法类型
+              standard:
+                sharding-column: user_id
+                # 分片算法名称
+                sharding-algorithm-name: alg-standard-table_crc8
           t_log_info:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            #              actual-data-nodes: ds.t_log_info_0$->{1..9}_0$->{0..7},ds.t_log_info_$->{10..12}_0$->{0..7}
-            actual-data-nodes: ds202$->{3..4}.t_log_info_03_0$->{0..3}
+            actual-data-nodes: ds202$->{3..4}.ds.t_log_info_0$->{1..9}_0$->{0..7},ds202$->{3..4}.t_log_info_$->{10..12}_0$->{0..7}
             database-strategy:
               standard:
                 sharding-column: id
@@ -41,24 +74,40 @@ spring:
             # 分表策略
             table-strategy:
               # 分表算法类型
-              standard:
-                sharding-column: id
+              complex:
+                sharding-columns: id ,create_time
                 # 分片算法名称
-                sharding-algorithm-name: alg-table_crc8
+                sharding-algorithm-name: alg-complex-table_crc8
+
+        # 分布式主键算法
+        key-generators:
+          # 雪花算法
+          key-gen-snowflake:
+            type: SNOWFLAKE
+            props:
+              # 工作机器ID，确保每个实例的唯一性
+              worker-id: 123
+              # 最大容忍时钟回拨时间差，单位毫秒
+              max-tolerate-time-difference-milliseconds: 5
         # 分片算法类型
         sharding-algorithms:
-          # 分表算法
+          # 分库算法
           alg-database_crc8:
-            type: CRC8_DATABASE_TYPE
+            type: CRC8_STANDARD_DATABASE_TYPE
             props:
               strategy: STANDARD
               algorithm-class-name: cc.taketo.algorithm.CRC8DatabaseShardingAlgorithm
           # 分表算法
-          alg-table_crc8:
-            type: CRC8_TABLE_TYPE
+          alg-standard-table_crc8:
+            type: CRC8_STANDARD_TABLE_TYPE
             props:
               strategy: STANDARD
-              algorithm-class-name: cc.taketo.algorithm.CRC8TableShardingAlgorithm
+              algorithm-class-name: cc.taketo.algorithm.CRC8StandardTableShardingAlgorithm
+          alg-complex-table_crc8:
+            type: CRC8_COMPLEX_TABLE_TYPE
+            props:
+              strategy: COMPLEX
+              algorithm-class-name: cc.taketo.algorithm.CRC8ComplexTableShardingAlgorithm
 
 mybatis-plus:
   # 扫描Mapper接口对应的XML文件
