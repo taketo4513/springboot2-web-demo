@@ -26,13 +26,17 @@ spring:
     rules:
       # 分片配置
       sharding:
+        default-database-strategy:
+          standard:
+            sharding-column: create_time
+            sharding-algorithm-name: alg-database_crc8
         # 分表配置
         tables:
           # 逻辑表名
           t_user:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            actual-data-nodes: ds202$->{3..4}.t_user$->{0..1}
+            actual-data-nodes: ds202$->{3..4}.t_user_0$->{0..3}
             # 分布式序列策略配置
             key-generate-strategy:
               # 分布式序列列名称
@@ -49,7 +53,7 @@ spring:
           t_order:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            actual-data-nodes: ds202$->{3..4}.t_order$->{0..2}
+            actual-data-nodes: ds202$->{3..4}.t_order_0$->{0..3}
             # 分布式序列策略配置
             key-generate-strategy:
               # 分布式序列列名称
@@ -66,16 +70,12 @@ spring:
           t_log_info:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            actual-data-nodes: ds202$->{3..4}.ds.t_log_info_0$->{1..9}_0$->{0..7},ds202$->{3..4}.t_log_info_$->{10..12}_0$->{0..7}
-            database-strategy:
-              standard:
-                sharding-column: id
-                sharding-algorithm-name: alg-database_crc8
+            actual-data-nodes: ds202$->{3..4}.t_log_info_0$->{1..9}_0$->{0..7},ds202$->{3..4}.t_log_info_$->{10..12}_0$->{0..7}
             # 分表策略
             table-strategy:
               # 分表算法类型
               complex:
-                sharding-columns: id ,create_time
+                sharding-columns: id,create_time
                 # 分片算法名称
                 sharding-algorithm-name: alg-complex-table_crc8
 

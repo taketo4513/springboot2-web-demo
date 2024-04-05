@@ -65,7 +65,7 @@ spring:
           t_user:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            actual-data-nodes: myds.t_user$->{0..1}
+            actual-data-nodes: myds.t_user_0$->{0..3}
             # 分布式序列策略配置
             key-generate-strategy:
               # 分布式序列列名称
@@ -83,7 +83,7 @@ spring:
           t_order:
             # 真实表名，这里需要加上写入数据库的名称
             # 使用读写分离数据源的逻辑库名称
-            actual-data-nodes: myds.t_order$->{0..2}
+            actual-data-nodes: myds.t_order_0$->{0..3}
             # 分布式序列策略配置
             key-generate-strategy:
               # 分布式序列列名称
@@ -108,7 +108,7 @@ spring:
           alg_inline_userid:
             type: INLINE
             props:
-              algorithm-expression: t_user$->{id % 2}
+              algorithm-expression: t_user$->{id % 4}
           # 取模分片算法
           alg_mod:
             type: MOD

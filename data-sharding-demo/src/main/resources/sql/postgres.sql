@@ -12,7 +12,7 @@
  Target Server Version : 120018
  File Encoding         : 65001
 
- Date: 05/04/2024 19:56:17
+ Date: 05/04/2024 22:38:41
 */
 
 
@@ -1073,10 +1073,10 @@ CREATE TABLE "public"."t_log_info_12_07" (
 ;
 
 -- ----------------------------
--- Table structure for t_order0
+-- Table structure for t_order_00
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."t_order0";
-CREATE TABLE "public"."t_order0" (
+DROP TABLE IF EXISTS "public"."t_order_00";
+CREATE TABLE "public"."t_order_00" (
   "id" int8 NOT NULL,
   "order_no" varchar COLLATE "pg_catalog"."default",
   "user_id" int8,
@@ -1085,10 +1085,10 @@ CREATE TABLE "public"."t_order0" (
 ;
 
 -- ----------------------------
--- Table structure for t_order1
+-- Table structure for t_order_01
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."t_order1";
-CREATE TABLE "public"."t_order1" (
+DROP TABLE IF EXISTS "public"."t_order_01";
+CREATE TABLE "public"."t_order_01" (
   "id" int8 NOT NULL,
   "order_no" varchar COLLATE "pg_catalog"."default",
   "user_id" int8,
@@ -1097,10 +1097,10 @@ CREATE TABLE "public"."t_order1" (
 ;
 
 -- ----------------------------
--- Table structure for t_order2
+-- Table structure for t_order_02
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."t_order2";
-CREATE TABLE "public"."t_order2" (
+DROP TABLE IF EXISTS "public"."t_order_02";
+CREATE TABLE "public"."t_order_02" (
   "id" int8 NOT NULL,
   "order_no" varchar COLLATE "pg_catalog"."default",
   "user_id" int8,
@@ -1109,10 +1109,22 @@ CREATE TABLE "public"."t_order2" (
 ;
 
 -- ----------------------------
--- Table structure for t_user0
+-- Table structure for t_order_03
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."t_user0";
-CREATE TABLE "public"."t_user0" (
+DROP TABLE IF EXISTS "public"."t_order_03";
+CREATE TABLE "public"."t_order_03" (
+  "id" int8 NOT NULL,
+  "order_no" varchar COLLATE "pg_catalog"."default",
+  "user_id" int8,
+  "create_time" timestamp(6)
+)
+;
+
+-- ----------------------------
+-- Table structure for t_user_00
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_user_00";
+CREATE TABLE "public"."t_user_00" (
   "id" int8 NOT NULL,
   "username" varchar(255) COLLATE "pg_catalog"."default",
   "create_time" timestamp(6)
@@ -1120,10 +1132,32 @@ CREATE TABLE "public"."t_user0" (
 ;
 
 -- ----------------------------
--- Table structure for t_user1
+-- Table structure for t_user_01
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."t_user1";
-CREATE TABLE "public"."t_user1" (
+DROP TABLE IF EXISTS "public"."t_user_01";
+CREATE TABLE "public"."t_user_01" (
+  "id" int8 NOT NULL,
+  "username" varchar(255) COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6)
+)
+;
+
+-- ----------------------------
+-- Table structure for t_user_02
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_user_02";
+CREATE TABLE "public"."t_user_02" (
+  "id" int8 NOT NULL,
+  "username" varchar(255) COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6)
+)
+;
+
+-- ----------------------------
+-- Table structure for t_user_03
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_user_03";
+CREATE TABLE "public"."t_user_03" (
   "id" int8 NOT NULL,
   "username" varchar(255) COLLATE "pg_catalog"."default",
   "create_time" timestamp(6)
@@ -1771,26 +1805,41 @@ ALTER TABLE "public"."t_log_info_12_06" ADD CONSTRAINT "t_log_info_12_06_pkey" P
 ALTER TABLE "public"."t_log_info_12_07" ADD CONSTRAINT "t_log_info_12_07_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table t_order0
+-- Primary Key structure for table t_order_00
 -- ----------------------------
-ALTER TABLE "public"."t_order0" ADD CONSTRAINT "t_order_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_order_00" ADD CONSTRAINT "t_order_00_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table t_order1
+-- Primary Key structure for table t_order_01
 -- ----------------------------
-ALTER TABLE "public"."t_order1" ADD CONSTRAINT "t_order0_copy1_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_order_01" ADD CONSTRAINT "t_order_01_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table t_order2
+-- Primary Key structure for table t_order_02
 -- ----------------------------
-ALTER TABLE "public"."t_order2" ADD CONSTRAINT "t_order0_copy2_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_order_02" ADD CONSTRAINT "t_order_02_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table t_user0
+-- Primary Key structure for table t_order_03
 -- ----------------------------
-ALTER TABLE "public"."t_user0" ADD CONSTRAINT "t_user_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_order_03" ADD CONSTRAINT "t_order_03_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table t_user1
+-- Primary Key structure for table t_user_00
 -- ----------------------------
-ALTER TABLE "public"."t_user1" ADD CONSTRAINT "t_user_copy1_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_user_00" ADD CONSTRAINT "t_user_00_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table t_user_01
+-- ----------------------------
+ALTER TABLE "public"."t_user_01" ADD CONSTRAINT "t_user_01_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table t_user_02
+-- ----------------------------
+ALTER TABLE "public"."t_user_02" ADD CONSTRAINT "t_use_r02_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table t_user_03
+-- ----------------------------
+ALTER TABLE "public"."t_user_03" ADD CONSTRAINT "t_user_03_pkey" PRIMARY KEY ("id");

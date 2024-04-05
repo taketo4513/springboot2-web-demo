@@ -8,17 +8,17 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Properties;
 
-public class CRC8DatabaseShardingAlgorithm implements StandardShardingAlgorithm<Long> {
+public class CRC8DatabaseShardingAlgorithm implements StandardShardingAlgorithm<LocalDateTime> {
 
     @Override
-    public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
-        int year = LocalDateTime.now().getYear();
+    public String doSharding(Collection<String> collection, PreciseShardingValue<LocalDateTime> preciseShardingValue) {
+        int year = preciseShardingValue.getValue().getYear();
         String prefix = preciseShardingValue.getDataNodeInfo().getPrefix();
         return prefix.concat(String.valueOf(year));
     }
 
     @Override
-    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Long> rangeShardingValue) {
+    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<LocalDateTime> rangeShardingValue) {
         return collection;
     }
 
