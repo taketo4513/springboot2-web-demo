@@ -1,6 +1,6 @@
 package cc.taketo.separate;
 
-import cc.taketo.Application;
+import cc.taketo.DataShardingApplication;
 import cc.taketo.entity.Order;
 import cc.taketo.entity.User;
 import cc.taketo.mapper.OrderMapper;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Zhangp
  * @date 2024/3/10 20:50
  */
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = DataShardingApplication.class)
 public class ShareTableTest {
 
     @Resource

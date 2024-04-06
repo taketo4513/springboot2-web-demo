@@ -1,6 +1,6 @@
 package cc.taketo.operation;
 
-import cc.taketo.Application;
+import cc.taketo.CacheRedisApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
  * @author Zhangp
  * @date 2024/3/21 15:48
  */
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = CacheRedisApplication.class)
 public class GetTest {
 
     @Resource

@@ -1,6 +1,6 @@
 package cc.taketo.separate;
 
-import cc.taketo.Application;
+import cc.taketo.DataShardingApplication;
 import cc.taketo.entity.User;
 import cc.taketo.mapper.UserMapper;
 import cn.hutool.core.date.DatePattern;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Zhangp
  * @date 2024/3/10 18:58
  */
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = DataShardingApplication.class)
 public class ReadWriteTest {
 
     @Resource

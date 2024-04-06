@@ -1,6 +1,6 @@
 package cc.taketo.kafka;
 
-import cc.taketo.Application;
+import cc.taketo.MessageKafkaApplication;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 import javax.annotation.Resource;
 import java.util.concurrent.ExecutionException;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = MessageKafkaApplication.class)
 public class KafkaProducerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducerTest.class);

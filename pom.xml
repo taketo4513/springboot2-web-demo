@@ -14,6 +14,7 @@
         <module>data-sharding-demo</module>
         <module>data-gauss-demo</module>
         <module>cache-redis-demo</module>
+        <module>file-ftp-demo</module>
     </modules>
 
     <properties>

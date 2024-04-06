@@ -1,6 +1,6 @@
 package cc.taketo.snowflake;
 
-import cc.taketo.Application;
+import cc.taketo.DataShardingApplication;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = DataShardingApplication.class)
 public class RedisWorkIdTest {
 
     @Resource
