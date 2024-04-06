@@ -1,5 +1,6 @@
-package cc.taketo.algorithm;
+package cc.taketo.config;
 
+import cc.taketo.algorithm.SnowflakeWorkId;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.zaxxer.hikari.HikariDataSource;
@@ -7,6 +8,7 @@ import org.apache.shardingsphere.driver.api.ShardingSphereDataSourceFactory;
 import org.apache.shardingsphere.infra.config.RuleConfiguration;
 import org.apache.shardingsphere.infra.config.algorithm.ShardingSphereAlgorithmConfiguration;
 import org.apache.shardingsphere.infra.config.mode.ModeConfiguration;
+import org.apache.shardingsphere.mode.repository.standalone.StandalonePersistRepositoryConfiguration;
 import org.apache.shardingsphere.sharding.api.config.ShardingRuleConfiguration;
 import org.apache.shardingsphere.sharding.api.config.rule.ShardingTableRuleConfiguration;
 import org.apache.shardingsphere.sharding.api.config.strategy.keygen.KeyGenerateStrategyConfiguration;
@@ -58,7 +60,19 @@ public class ShardingSphereConfiguration {
      * @return
      */
     private ModeConfiguration getModeConfig() {
-        return new ModeConfiguration("Memory", null, true);
+        // 内存模式
+//        return new ModeConfiguration("Memory", null, true);
+
+        // 单机模式
+        Properties properties = new Properties();
+        properties.put("path", ".shardingsphere/");
+
+        return new ModeConfiguration("Standalone",
+                new StandalonePersistRepositoryConfiguration(
+                        "File",
+                        properties
+                ),
+                true);
     }
 
     /**
@@ -87,6 +101,11 @@ public class ShardingSphereConfiguration {
         return dataSourceMap;
     }
 
+    /**
+     * 获取分库全部规则配置
+     *
+     * @return
+     */
     private Collection<RuleConfiguration> getCollectionRuleConfiguration() {
         ShardingRuleConfiguration shardingRuleConfiguration = getShardingRuleConfiguration();
         return Collections.singletonList(shardingRuleConfiguration);
