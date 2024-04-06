@@ -8,7 +8,8 @@ SHELL_FOLDER=$(
 export LANG='zh_CN.utf8'
 
 # Set the main class for the Java application
-MAIN_CLASS="cc.taketo.Application main"
+MAIN_CLASS_NAME=""
+MAIN_CLASS_PATH=""
 
 # Class search path
 APPS_FOLDER=$SHELL_FOLDER/app
@@ -53,10 +54,10 @@ show_help() {
     LOG_INFO
     LOG_INFO "Options:"
     LOG_INFO "  -h, --help      Display this help message."
-    LOG_INFO "  -e, --env ENV   Set the spring profile environment for the Java application."
+    LOG_INFO "  -e, --env ENV   Set the spring environment for the Java application."
     LOG_INFO
     LOG_INFO "Example:"
-    LOG_INFO "  ./start.sh -e prod"
+    LOG_INFO "  ./start.sh -e server.port=8080"
 }
 
 # Parse command line options
@@ -86,27 +87,44 @@ parse_options() {
     done
 }
 
+get_main_class() {
+    # get jar path
+    local jar_path=$APPS_FOLDER/*.jar
+    # get jar package Application class, example:  875 Tue Mar 26 09:54:18 CST 2024 xx/xx/xx/xx/xxxApplication.class
+    local file_name=$(jar -tvf $jar_path | grep Application)
+    # get base name, example: xxxApplication.class
+    local base_name=$(basename "$file_name")
+    # get package name, example: xxxApplication
+    MAIN_CLASS_NAME=${base_name%.*}
+    # get paht name, example: xx/xx/xx/xx/xxxApplication.class
+    # replace /, example: xx.xx.xx.xx.xxxApplication.class
+    # remove .class, xx.xx.xx.xx.xxxApplication
+    local package_path=$(echo "$file_name" | grep -oE '[^ ]+\.class$' | sed 's#/#.#g; s/\.class$//')
+    MAIN_CLASS_PATH="$package_path main"
+}
+
 # Display information about Java, environment, main class, and classpath
 show_info() {
     java_version=$(java -version 2>&1 | head -n 1)
 
     LOG_INFO "--------------------------------------------------------------------"
     LOG_INFO "Java version: ${java_version}"
-    LOG_INFO "Spring profile environment: ${ENVIRONMENT}"
-    LOG_INFO "Spring Boot MainClass: ${MAIN_CLASS}"
+    LOG_INFO "Spring Environment: ${ENVIRONMENT}"
+    LOG_INFO "Spring Boot MainClassName: ${MAIN_CLASS_NAME}"
+    LOG_INFO "Spring Boot MainClassPath: ${MAIN_CLASS_PATH}"
     LOG_INFO "Spring Boot ClassPath: ${CLASS_PATH}"
     LOG_INFO "--------------------------------------------------------------------"
 }
 
 # Get the process ID of the Java application
 java_pid() {
-    ps -ef | grep "${MAIN_CLASS}" | grep ${APPS_FOLDER} | grep -v grep | awk '{print $2}'
+    ps -ef | grep "${MAIN_CLASS_PATH}" | grep ${APPS_FOLDER} | grep -v grep | awk '{print $2}'
 }
 
 # Get the status of the Java application
 java_status() {
     if [ ! -z $(java_pid) ]; then
-        if [ ! -z "$(grep "Started Application" $SHELL_FOLDER/start.out)" ]; then
+        if [ ! -z "$(grep "Started $MAIN_CLASS_NAME" $SHELL_FOLDER/start.out)" ]; then
             echo ${STATUS_RUNNING}
         else
             echo ${STATUS_STARTING}
@@ -127,7 +145,7 @@ run_jar() {
     [ "$(echo $os | grep MINGW)" != "" ] && cp=$WINDS_CLASS_PATH
 
     # Run the Java application
-    nohup java ${ENVIRONMENT:+-Dspring.profiles.active=$ENVIRONMENT} -cp $cp $MAIN_CLASS 1>/dev/null 2>&1 &
+    nohup java ${ENVIRONMENT:+-D$ENVIRONMENT} -cp $cp $MAIN_CLASS_PATH 1>/dev/null 2>&1 &
     # Record PID to file
     echo $! >$SHELL_FOLDER/pid/java.pid
 }
@@ -146,11 +164,11 @@ before_start() {
 
     case ${status} in
     ${STATUS_STARTING})
-        LOG_ERROR "Application is starting, pid is $(java_pid)"
+        LOG_ERROR "$MAIN_CLASS_NAME is starting, pid is $(java_pid)"
         exit 0
         ;;
     ${STATUS_RUNNING})
-        LOG_ERROR "Application is running, pid is $(java_pid)"
+        LOG_ERROR "$MAIN_CLASS_NAME is running, pid is $(java_pid)"
         exit 0
         ;;
     ${STATUS_STOPPED})
@@ -167,6 +185,7 @@ start() {
     rm -rf $SHELL_FOLDER/pid/
     [ ! -d $SHELL_FOLDER/pid/ ] && mkdir -p $SHELL_FOLDER/pid/
     rm -f start.out
+    get_main_class
     show_info
     run_jar
     echo -e "\033[32mApplication booting up ..\033[0m\c"
@@ -202,15 +221,15 @@ after_start() {
     case ${status} in
     ${STATUS_STARTING})
         kill -9 $(java_pid)
-        LOG_ERROR "Exceed waiting time. Killed. Please try to start Application again"
+        LOG_ERROR "Exceed waiting time. Killed. Please try to start $MAIN_CLASS_NAME again"
         tail_log
         exit 1
         ;;
     ${STATUS_RUNNING})
-        LOG_INFO "Application started successfully, PID: $(java_pid)"
+        LOG_INFO "$MAIN_CLASS_NAME started successfully, PID: $(java_pid)"
         ;;
     ${STATUS_STOPPED})
-        LOG_ERROR "Application start failed"
+        LOG_ERROR "$MAIN_CLASS_NAME start failed"
         LOG_ERROR "See logs/error.log for details"
         tail_log
         exit 1
@@ -224,6 +243,7 @@ after_start() {
 # Main function
 main() {
     check_command java
+    check_command jar
     before_start
     start
     after_start
