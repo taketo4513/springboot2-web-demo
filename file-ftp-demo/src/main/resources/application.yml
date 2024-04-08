@@ -1,0 +1,26 @@
+ftp:
+  client:
+    host: 192.168.31.201
+    port: 21
+    username: ftpuser
+    password: 1q2w3e!Q@W#E
+    basePath: /home/ftpuser/data/
+    httpPath: http://192.168.31.201:30001/files/
+    encoding: UTF-8
+    passive-mode: true
+    client-timeout: 30000
+    thread-num: 2
+    transfer-file-type: 2
+    rename-uploaded: true
+    retry-times: 1200
+    buffer-size: 8192
+    max-active: 50
+    min-idle: 10
+    max-idle: 50
+    max-wait: 30000
+    block-when-exhausted: true
+    test-on-create: true
+    test-on-return: true
+    test-on-borrow: true
+    test-while-idle: false
+    lifo: false
