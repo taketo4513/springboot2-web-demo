@@ -64,7 +64,7 @@ spring:
             table-strategy:
               # 分表算法类型
               standard:
-                sharding-column: user_id
+                sharding-column: id
                 # 分片算法名称
                 sharding-algorithm-name: alg-standard-table_crc8
           t_log_info:
@@ -108,6 +108,9 @@ spring:
             props:
               strategy: COMPLEX
               algorithm-class-name: cc.taketo.algorithm.CRC8ComplexTableShardingAlgorithm
+        binding-tables:
+          - "t_user"
+          - "t_order"
 
 mybatis-plus:
   # 扫描Mapper接口对应的XML文件

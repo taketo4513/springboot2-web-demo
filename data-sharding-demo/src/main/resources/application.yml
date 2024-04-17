@@ -4,4 +4,4 @@ spring:
     name: data-sharding-demo
   profiles:
     # cf:java配置 sep：分库分表 yaml配置
-    active: cf
+    active: sep

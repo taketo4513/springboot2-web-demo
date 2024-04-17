@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.*;
 
-@Configuration
+//@Configuration
 public class ShardingSphereConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ShardingSphereConfiguration.class);
@@ -118,7 +118,7 @@ public class ShardingSphereConfiguration {
      */
     private Properties getProperties() {
         Properties properties = new Properties();
-        properties.put("sql.show", "true");
+        properties.put("sql-show", "true");
         return properties;
     }
 
@@ -133,6 +133,8 @@ public class ShardingSphereConfiguration {
         shardingRuleConfiguration.getTables().add(getUserTableRuleConfiguration());
         shardingRuleConfiguration.getTables().add(getOrderTableRuleConfiguration());
         shardingRuleConfiguration.getTables().add(getLogTableRuleConfiguration());
+        // 设置绑定表
+//        shardingRuleConfiguration.getBindingTableGroups().add("t_order,t_user");
         // 设置默认分库策略
         shardingRuleConfiguration.setDefaultDatabaseShardingStrategy(new StandardShardingStrategyConfiguration("create_time", "alg-database_crc8"));
         // 分布式主键算法，雪花算法
@@ -175,7 +177,7 @@ public class ShardingSphereConfiguration {
                 "t_order",
                 "ds202$->{3..4}.t_order_0$->{0..3}");
         shardingTableRuleConfiguration.setKeyGenerateStrategy(new KeyGenerateStrategyConfiguration("id", "key-gen-snowflake"));
-        shardingTableRuleConfiguration.setTableShardingStrategy(new StandardShardingStrategyConfiguration("user_id", "alg-standard-table_crc8"));
+        shardingTableRuleConfiguration.setTableShardingStrategy(new StandardShardingStrategyConfiguration("id", "alg-standard-table_crc8"));
         return shardingTableRuleConfiguration;
     }
 
@@ -188,6 +190,7 @@ public class ShardingSphereConfiguration {
         ShardingTableRuleConfiguration shardingTableRuleConfiguration = new ShardingTableRuleConfiguration(
                 "t_log_info",
                 "ds202$->{3..4}.t_log_info_0$->{1..9}_0$->{0..7},ds202$->{3..4}.t_log_info_$->{10..12}_0$->{0..7}");
+        shardingTableRuleConfiguration.setKeyGenerateStrategy(new KeyGenerateStrategyConfiguration("id", "key-gen-snowflake"));
         shardingTableRuleConfiguration.setTableShardingStrategy(new ComplexShardingStrategyConfiguration("id,create_time", "alg-complex-table_crc8"));
         return shardingTableRuleConfiguration;
     }

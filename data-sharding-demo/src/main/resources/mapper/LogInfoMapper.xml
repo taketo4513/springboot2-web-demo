@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.taketo.mapper.LogInfoMapper">
+
+    <insert id="bathInsert" parameterType="java.util.List">
+        INSERT INTO t_log_info (log_info, create_time) VALUES(
+        <foreach collection="list" item="item" separator=",">
+            #{item.logInfo},#{item.createTime}
+        </foreach>)
+    </insert>
+
+    <update id="bathUpdate" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE ${item.realTableName}
+            set log_info= #{item.logInfo}
+            where id = #{item.id}
+<!--            <set>-->
+<!--                <if test="item.logInfo != null and item.logInfo != ''">log_info = #{item.logInfo}</if>-->
+<!--            </set>-->
+        </foreach>
+    </update>
+
+</mapper>

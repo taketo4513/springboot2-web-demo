@@ -46,4 +46,11 @@ public class OrderController {
         System.out.println(orders.size());
         return JSON.toJSONString(orders);
     }
+
+    @GetMapping("/bind")
+    public String bind() {
+        List<Order> orders = orderMapper.selectOrderList();
+        System.out.println("orders = " + orders);
+        return JSON.toJSONString(orders);
+    }
 }
