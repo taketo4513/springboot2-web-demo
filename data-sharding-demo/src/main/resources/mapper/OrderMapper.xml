@@ -9,5 +9,6 @@
         SELECT o.id, o.order_no, o.user_id, o.create_time
         FROM t_order AS o
                  LEFT JOIN t_user AS u ON o.user_id = u.id
+        WHERE o.id = 1780538324692246530
     </select>
 </mapper>

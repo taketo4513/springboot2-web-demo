@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.*;
 
-//@Configuration
+@Configuration
 public class ShardingSphereConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ShardingSphereConfiguration.class);
@@ -134,7 +134,7 @@ public class ShardingSphereConfiguration {
         shardingRuleConfiguration.getTables().add(getOrderTableRuleConfiguration());
         shardingRuleConfiguration.getTables().add(getLogTableRuleConfiguration());
         // 设置绑定表
-//        shardingRuleConfiguration.getBindingTableGroups().add("t_order,t_user");
+        shardingRuleConfiguration.getBindingTableGroups().add("t_order,t_user");
         // 设置默认分库策略
         shardingRuleConfiguration.setDefaultDatabaseShardingStrategy(new StandardShardingStrategyConfiguration("create_time", "alg-database_crc8"));
         // 分布式主键算法，雪花算法
@@ -144,7 +144,7 @@ public class ShardingSphereConfiguration {
         // 分片算法
         Map<String, ShardingSphereAlgorithmConfiguration> shardingAlgorithm = new HashMap<>(3);
         // 分库算法
-        shardingAlgorithm.put("alg-database_crc8", getDatabaseCrc8AlgorithmConfiguration());
+//        shardingAlgorithm.put("alg-database_crc8", getDatabaseCrc8AlgorithmConfiguration());
         // 分表算法
         shardingAlgorithm.put("alg-standard-table_crc8", getStandardTableCrc8AlgorithmConfiguration());
         shardingAlgorithm.put("alg-complex-table_crc8", getComplexTableCrc8AlgorithmConfiguration());

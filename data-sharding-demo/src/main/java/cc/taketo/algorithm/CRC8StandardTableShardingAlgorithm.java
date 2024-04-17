@@ -10,6 +10,8 @@ import java.util.Properties;
 
 public class CRC8StandardTableShardingAlgorithm implements StandardShardingAlgorithm<Long> {
 
+    private Properties props;
+
     private static final int SUB_TABLE_NUM = 4; // 分表数量
 
     @Override
@@ -34,10 +36,11 @@ public class CRC8StandardTableShardingAlgorithm implements StandardShardingAlgor
 
     @Override
     public Properties getProps() {
-        return null;
+        return this.props;
     }
 
     @Override
     public void init(Properties properties) {
+        this.props = properties;
     }
 }

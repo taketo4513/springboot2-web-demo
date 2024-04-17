@@ -108,9 +108,7 @@ spring:
             props:
               strategy: COMPLEX
               algorithm-class-name: cc.taketo.algorithm.CRC8ComplexTableShardingAlgorithm
-        binding-tables:
-          - "t_user"
-          - "t_order"
+#        binding-tables[0]: t_user,t_order
 
 mybatis-plus:
   # 扫描Mapper接口对应的XML文件

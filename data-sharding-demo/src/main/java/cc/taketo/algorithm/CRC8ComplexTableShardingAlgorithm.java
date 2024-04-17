@@ -10,6 +10,8 @@ import java.util.*;
 
 public class CRC8ComplexTableShardingAlgorithm implements ComplexKeysShardingAlgorithm {
 
+    private Properties props;
+
     private final int SUB_TABLE_NUM = 4; // 分表数量
 
     private final String CREATE_TIME = "create_time";
@@ -125,11 +127,12 @@ public class CRC8ComplexTableShardingAlgorithm implements ComplexKeysShardingAlg
 
     @Override
     public Properties getProps() {
-        return null;
+        return this.props;
     }
 
     @Override
     public void init(Properties properties) {
+        this.props = properties;
     }
 
 }
