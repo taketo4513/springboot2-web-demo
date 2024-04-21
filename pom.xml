@@ -15,6 +15,7 @@
         <module>data-gauss-demo</module>
         <module>cache-redis-demo</module>
         <module>file-ftp-demo</module>
+        <module>monitor-prometheus-demo</module>
     </modules>
 
     <properties>
