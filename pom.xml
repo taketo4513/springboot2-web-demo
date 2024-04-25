@@ -16,6 +16,7 @@
         <module>cache-redis-demo</module>
         <module>file-ftp-demo</module>
         <module>monitor-prometheus-demo</module>
+        <module>draw-2d-demo</module>
     </modules>
 
     <properties>
