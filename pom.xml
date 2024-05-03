@@ -17,6 +17,7 @@
         <module>file-ftp-demo</module>
         <module>monitor-prometheus-demo</module>
         <module>draw-2d-demo</module>
+        <module>lock-redis-demo</module>
     </modules>
 
     <properties>
@@ -55,6 +56,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
