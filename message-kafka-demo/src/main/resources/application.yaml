@@ -1,7 +1,22 @@
 spring:
   kafka:
     # kafka服务地址
-    bootstrap-servers: 192.168.31.101:9090,192.168.31.101:9091,192.168.31.101:9092
+    bootstrap-servers:
+      - 192.168.31.101:9090
+      - 192.168.31.101:9091
+      - 192.168.31.101:9092
+    listener:
+      # listener类型
+      # single | batch
+      type: single
+      # 已消费offset提交模式（仅在enable-auto-commit=false时才需明确指定）
+      # 单记录  | 批量   | 超时  | 超过消费数量 | 超时或超过数量 | 手动提交（ack）后同BATCH | 手动立即提交
+      # RECORD | BATCH | TIME | COUNT      | COUNT_TIME   | MANUAL                | MANUAL_IMMEDIATE
+      # https://docs.spring.io/spring-kafka/docs/2.8.11/reference/html/#committing-offsets
+      # 注：手动提交offset模式包括：MANUAL | MANUAL_IMMEDIATE
+      #    且使用相关手动模式需在@KafkaListener标注方法中使用Acknowledgment参数
+      ack-mode: manual_immediate
+    # 生产者
     producer:
       # 默认的key和value的序列化类
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -13,22 +28,52 @@ spring:
       acks: all
       # 重试次数，默认是 int 最大值 2147483647。
       retries: 3
-      # 批次大小，默认 16k，适当增加该值，可以提高吞吐量，但是如果该值设置太大，会导致数据传输延迟增加。
+      # 批次大小，默认 16k，适当增加该值，可以提高吞吐量，但是如果该值设置太大，会导致数据传输延迟增加。当 linger.ms=0 时，此值无效
       batch-size: 16384
       # RecordAccumulator 缓冲区总大小，默认 32m
       buffer-memory: 33554432
       # 压缩，默认 none，可配置值 gzip、snappy、lz4和zstd
-      compression-type: none
+      compression-type: snappy
       # 事务ID
       transaction-id-prefix: tx-
       # 属性配置
       properties:
+        # 允许最多没有返回 ack 的次数，默认为 5
+        max.in.flight.requests.per.connection: 5
+        # 两次重试之间的时间间隔，默认是 100ms
+        retry.backoff.ms: 100
+        # 消息提交延时时间(单位毫秒)，当生产者接收到消息 linger.ms 秒钟后，就会将消息提交给 kafka
+        # 当生产端积累的消息达到 batch-size 大小后，也会将消息提交给 kafka
+        # linger.ms 默认为 0 ，表示每接收到一条消息就会立即提交给 kafka，此时 batch-size 无效。如果对实时性要求高，则建议设置为 0
         # 数据拉取等待时间，生产环境建议该值大小为 5-100ms 之间。
         linger.ms: 0
         # 幂等性
         enable.idempotence: true
         # 配置自定义分区器
-#        partitioner.class: cc.taketo.partitioner.CustomPartitioner
+    #        partitioner.class: cc.taketo.partitioner.CustomPartitioner
+    # 消费者
     consumer:
       # 默认的消费组
       group-id: test-consumer-group
+      # 默认的key和value的序列化类
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 是否自动提交偏移量
+      enable-auto-commit: false
+      # 单次poll操作从单个分区里能够获取的最大消息数,默认值是500
+      max-poll-records: 500
+      # 若Kafka中没有偏移量，处理策略
+      # earliest: 自动重置偏移量为最早的偏移量
+      # latest: 自动重置偏移量为最新的偏移量（默认）
+      # none: 抛出异常
+      auto-offset-reset: earliest
+      # Kafka 消费者和 coordinator 之间的心跳时间，默认 3s
+      # 该值必须小于 session.timeout.ms ，也不应该高于session.timeout.ms 的 1/3
+      heartbeat-interval: 3000
+      # 属性配置
+      properties:
+        # Kafka 消费者和 coordinator 之间连接超时时间，默认 45s
+        # 超过该值，该消费者被移除，消费者组执行 Rebalance 操作
+        session.timeout.ms: 45000
+        # 消费请求超时时间
+        request.timeout.ms: 120000
