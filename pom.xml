@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
     <modules>
         <module>base-template</module>
-        <module>message-kafka-demo</module>
+        <module>message-kafka-demo </module>
         <module>data-sharding-demo</module>
         <module>data-gauss-demo</module>
         <module>cache-redis-demo</module>
         <module>file-ftp-demo</module>
         <module>monitor-prometheus-demo</module>
         <module>lock-redis-demo</module>
+        <module>office-pdf-demo</module>
     </modules>
 
     <properties>
